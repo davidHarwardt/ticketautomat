@@ -35,10 +35,8 @@ function createMoneyElement(value: number, displayValue: number, ...classNames: 
     return ele;
 }
 
-function createMoneyDropArea(cb: (value: number) => boolean, ...classNames: string[])
+function createMoneyDropArea(cb: (value: number) => boolean, ele: HTMLDivElement = document.createElement("div"), ...classNames: string[])
 {
-    const ele = document.createElement("div");
-
     ele.classList.add("money-drop");
     ele.classList.add(...classNames);
 
@@ -52,13 +50,13 @@ function createMoneyDropArea(cb: (value: number) => boolean, ...classNames: stri
         ev.preventDefault();
         const data: IMoneyDragData = JSON.parse(ev.dataTransfer.getData("application/json"));
         
-        if(cb(data.value))
+        if(cb(data.value) || document.querySelector(`[data-drag-id="${data.elementId}"]`)?.classList.contains("remove"))
         {
             // delete element
             document.querySelector(`[data-drag-id="${data.elementId}"]`)?.remove();
         }
 
-        console.log(data);
+        // console.log(data);
         
     });
 
